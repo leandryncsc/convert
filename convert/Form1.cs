@@ -33,10 +33,20 @@ namespace convert
             Worksheet ws = doc.Workbook.Worksheets[0];
 
             string dados = TratarDados(ws);
+
+            /* Se retornar nulo é por conta de um erro ao ler
+            os dados da planilha (incompatibilidade, etc.) */
+            if(string.IsNullOrEmpty(dados))
+            {
+                MessageBox.Show("Arquivo incompatível.","Erro catastrófico");
+                bconverter.Focus();
+                return;
+            }
+
             string sufixo = "_saida";
             string arq_nome = Path.GetFileName(arq.Split('.')[0]);
 
-            Utis.EscreverArquivo(dados, arq_nome + sufixo);
+            Utis.SalvarArquivo(arq_nome + sufixo, dados);
 
             doc.Close();
         }
@@ -52,8 +62,13 @@ namespace convert
             string tag = string.Empty;
             
             int ylin = 0;
+
+            const int MAX_TENTATIVAS = 300;
+
+            // Conta quantas vezes ler a tag foram tentadas
+            int zero_tentativas = 0;
             
-            for(int xcol = 0; xcol < 6000; xcol++)
+            for(int xcol = 0; xcol < MAX_TENTATIVAS; xcol++)
             {
                 // Cell(y, x)
                 string celula = ws.Cell(ylin, xcol).ToString();
@@ -71,6 +86,13 @@ namespace convert
                 if(xcol == 0)
                 {
                     Console.WriteLine("CELL " + celula);
+                    zero_tentativas++;
+                    
+                    if(zero_tentativas > MAX_TENTATIVAS)
+                    {
+                        return null;
+                    }
+
                     tag = celula;
                 }
 

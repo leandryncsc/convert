@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace convert
@@ -33,33 +29,50 @@ namespace convert
             }
         }
 
-        public static void EscreverArquivo(string dados, string nome)
+        public static void SalvarArquivo (string nome, string dados)
         {
-            const string caminho = "./saida";
             const string ext = ".txt";
 
-            CriarPasta(caminho);
+            SaveFileDialog sfd = new SaveFileDialog()
+            {
+                Title = "Salvar arquivo convertido",
+                FileName = nome + ext,
+                Filter = "TXT (*.txt)|*.txt|TBF (*.tbf)|*.tbf",
+                FilterIndex = 0,
+                RestoreDirectory = true,
+            };
 
-            string final = caminho + "/" + nome + ext;
+            if(sfd.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
+            string dir = sfd.FileName;
+
+            EscreverDados(dir, dados);
+        }
+
+        private static void EscreverDados (string dir, string dados)
+        {
             try
             {
-                FileStream fs = File.Create(final);
+                FileStream fs = File.Create(dir);
                 fs.Close();
 
-                File.WriteAllText(final, dados);
-                Console.WriteLine("\n" + "Gravado " + nome + ext);
+                File.WriteAllText(dir, dados);
+                Console.WriteLine("\n" + "Gravado: " + dir);
                 Console.WriteLine("Arquivo escrito com sucesso.");
+
+                MessageBox.Show("Arquivo salvo.", "Aviso");
             }
             catch(Exception ex)
             {
                 Console.WriteLine("\n" + "! Erro !\nProblema ao escrever arquivo.");
                 Console.WriteLine("\n" + ex.Message);
-                //throw ex;
             }
         }
 
-        public static void CriarPasta (string dir)
+        /*public static void CriarPasta (string dir)
         {
             if(Directory.Exists(dir))
             {
@@ -67,6 +80,6 @@ namespace convert
             }
 
             Directory.CreateDirectory(dir);
-        }
+        }*/
     }
 }
