@@ -117,8 +117,8 @@ namespace convert
                         continue;
                     }
 
-                    _valor += "\n";
-                    Console.Write('\n');
+                    _valor += "\r\n";
+                    Console.Write("\r\n");
 
                     // Tag 04 delimita o fim do arquivo
                     if(tag == "04")
@@ -140,10 +140,10 @@ namespace convert
             }
 
             Console.WriteLine(string.Empty);
-            Console.WriteLine("CABEÇALHO: " + cabeca + "\n");
+            Console.WriteLine("CABEÇALHO: " + cabeca + "\r\n");
             Console.WriteLine("CORPO: " + corpo);
 
-            return cabeca + "\n" + corpo;
+            return cabeca + "\r\n" + corpo;
         }
 
         /* CONTROLES E UI */
