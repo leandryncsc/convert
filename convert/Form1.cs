@@ -118,7 +118,6 @@ namespace convert
                     }
 
                     _valor += "\r\n";
-                    Console.Write("\r\n");
 
                     // Tag 04 delimita o fim do arquivo
                     if(tag == "04")
@@ -140,8 +139,8 @@ namespace convert
             }
 
             Console.WriteLine(string.Empty);
-            Console.WriteLine("CABEÇALHO: " + cabeca + "\r\n");
-            Console.WriteLine("CORPO: " + corpo);
+            Console.WriteLine(cabeca);
+            Console.WriteLine(corpo);
 
             return cabeca + "\r\n" + corpo;
         }
